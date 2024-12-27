@@ -1,7 +1,7 @@
 import { styled } from "@linaria/react";
 import { useStore } from "@nanostores/react";
 import { useAsync, useInfiniteScroll } from "@raviqqe/react-hooks";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { doneTaskLister } from "../../../main/done-task-lister.js";
 import { doneTaskPresenter } from "../../../main/done-task-presenter.js";
 import { Loader } from "../../components/Loader.js";
@@ -35,7 +35,8 @@ export default (): JSX.Element => {
     await doneTaskLister.listMore();
     setDone(doneTaskPresenter.tasks.get()?.length === tasks.length);
   }, [tasks]);
-  const ref = useInfiniteScroll<HTMLDivElement>(listMore);
+  const ref = useRef(null);
+  useInfiniteScroll(ref, listMore);
 
   return (
     <Container>
